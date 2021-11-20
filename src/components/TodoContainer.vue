@@ -2,20 +2,33 @@
   <div class="growth-boi">
     <div class="todo-container">
       <div class="todos">
-        <Todo v-for="todo in todos" v-bind:todo="todo" v-bind:key="todo.id"/>      
+        <template v-if="todos.length">
+          <Todo 
+            v-for="todo in todos" 
+            v-bind:todo="todo" 
+            v-bind:key="todo.id" 
+            v-bind:toggle_todo_callback="toggle_todo_callback"
+            v-bind:remove_todo_callback="remove_todo_callback"
+          />      
+        </template>
+        <template v-else>
+          <div class="no-todos">
+            <span>No Todos!</span>
+          </div>
+        </template>
       </div>
       <div class="new-todo-form-container">
-        <form>
-          <input class="form-input" type="text" name="todo" id="todo-input">
+        <form v-on:submit.prevent="add_todo">
+          <input class="form-input" type="text" name="todo" id="todo-input" v-model="new_todo_name">
           <input class="form-submit" type="submit" value="Add">
         </form>
       </div>
       <div class="todo-status">
         <div class="todo-status-container">
-          <span>In Progress: {{ todos.length }}</span>
+          <span>In Progress: {{ in_progress_todos_length(todos) }}</span>
         </div>
         <div class="todo-status-container">
-          <span>Completed: {{ todos.filter((todo) => todo.completed).length}}</span>
+          <span>Completed: {{ completed_todos_length(todos) }}</span>
         </div>
       </div>
     </div>
@@ -34,7 +47,28 @@ export default Vue.extend({
   },
   props: {
     todos: Array as () => TodoType[],
+    toggle_todo_callback: Function,
+    add_todo_callback: Function,
+    remove_todo_callback: Function,
   },
+  methods: {
+    in_progress_todos_length(todos: TodoType[]): number {
+      return todos.filter((todo) => !todo.completed).length;
+    }, completed_todos_length(todos: TodoType[]): number {
+      return todos.filter((todo) => todo.completed).length;
+    }, add_todo() {
+      // Get the contents of form
+      const todo_name: string = this.new_todo_name;
+
+      if (todo_name && todo_name.trim()) {
+        // Create new todo
+        this.add_todo_callback(todo_name);
+
+        // Clear form
+        this.new_todo_name = "";
+      }
+    }
+  }
 });
 </script>
 
@@ -54,6 +88,17 @@ export default Vue.extend({
 }
 
 /* Current Todos */
+
+.no-todos {
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-todos span {
+  font-size: 1.5rem;
+}
 
 /* Todo Add Form */
 
@@ -92,6 +137,7 @@ export default Vue.extend({
   padding: 0.7rem 1rem;
   font-weight: 500;
   border-radius: 0.2rem;
+  -webkit-appearance: none;
 }
 
 /* Todos Status */

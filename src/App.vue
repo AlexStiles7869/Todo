@@ -5,7 +5,12 @@
       <p>This app is a simple to-do app created to show a simple Vue app functioning. It has a persistent state; that is, the app will preserve any modification to the completion state of the individual to-do's between sessions (assuming the user doesn't clear local storage).  I could feasibly extend this to utilise a CMS in some way for actual persistence.</p>
       <p>The app is shown below.</p>
     </div>
-    <TodoContainer v-bind:todos="todos"/>
+    <TodoContainer 
+      v-bind:todos="todos" 
+      v-bind:toggle_todo_callback="toggle_todo" 
+      v-bind:add_todo_callback="add_todo"
+      v-bind:remove_todo_callback="remove_todo" 
+    />
     <ThingsToDo />
     <Footer />
   </div>
@@ -17,6 +22,8 @@ import TodoContainer from "./components/TodoContainer.vue";
 import ThingsToDo from "./components/ThingsToDo.vue"
 import Footer from "./components/Footer.vue"
 
+import { TodoType } from "./types"
+
 export default Vue.extend({
   name: "App",
   components: {
@@ -26,12 +33,60 @@ export default Vue.extend({
   },
   data() {
     return {
-      todos: [ 
-        {id: 0, name: "Todo 1", completed: false},
-        {id: 1, name: "Todo 2", completed: false},
-        {id: 2, name: "Todo 3", completed: false}
-      ]
+      todos: new Array as TodoType[],
+      storage: null,
     };
+  }, created: function() {
+    // If no todos have ever been stored, set the number of todos to zero
+    if (window.localStorage.getItem("todos") == null) {
+      window.localStorage.setItem("todos", JSON.stringify(new Array));
+      window.localStorage.setItem("todo_uid", JSON.stringify(0));
+    } else {
+      // Read in all the todos and store them
+      this.todos = JSON.parse(window.localStorage.getItem("todos")!);
+    }
+  }, methods: {
+    toggle_todo(todo_id: number) {
+      // Create the modified todo
+      const selected_todo: TodoType = this.todos.find((todo) => todo.id == todo_id)!;
+
+      const modified_todo: TodoType = {
+        ...selected_todo,
+        completed: !selected_todo.completed
+      }
+
+      // Update data and local storage
+
+      Vue.set(this.todos, this.todos.findIndex((todo) => todo.id == todo_id), modified_todo);
+
+      window.localStorage.setItem("todos", JSON.stringify(this.todos));
+    }, add_todo(name: string) {
+      const todo: TodoType = {
+        name: name,
+        id: JSON.parse(window.localStorage.getItem("todo_uid")!),
+        date: "October 30th",
+        time: "16:00",
+        note: "This is a test note",
+        tags: [{name: "Home 🏠"}],
+        completed: false
+      }
+
+      // Add to current list of todos
+      this.todos.push(todo);
+
+      // Increment UID
+      const new_uid: number = JSON.parse(window.localStorage.getItem("todo_uid")!) + 1;
+      window.localStorage.setItem("todo_uid", JSON.stringify(new_uid));
+
+      // Place the todo in local storage
+      window.localStorage.setItem("todos", JSON.stringify(this.todos));
+    }, remove_todo(todo_id: number) {
+      // Find the required todo  
+      this.todos.splice(this.todos.findIndex((todo) => todo.id == todo_id), 1);
+
+      // Remove it from local storage
+      window.localStorage.setItem("todos", JSON.stringify(this.todos));
+    }
   }
 });
 </script>

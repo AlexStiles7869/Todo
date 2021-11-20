@@ -4,14 +4,24 @@
       <p>Things that I need to do before this demo is completed.</p>
       <h3>Todo Functionality:</h3>
       <ul>
-        <li>Add click listeners to all the current todos to toggle their completion state.</li>
-        <li>Add functionality for form contents to be read, then cleared, and added to current todos and local storage</li>
-        <li>Get current todos from local storage</li>
-        <li>Add the following fields to todos:
+        <strike><li>Add click listeners to all the current todos to toggle their completion state.</li></strike>
+        <strike><li>Add functionality for form contents to be read, then cleared, and added to current todos and local storage</li></strike>
+        <strike><li>Get current todos from local storage</li></strike>
+        <li>Have different pages for completed and in progress todos, with ability to move todos once completed back to in progress</li>
+        <strike><li>Allow todos to be deleted</li></strike>
+        <strike><li>Add the following fields to todos:
           <ul>
             <li>Date (doesn't need to be validated, just any string)</li>
             <li>Time</li>
             <li>Preset tags (added tags out of scope, could be added somewhat easily)</li>
+            <li>Notes</li>
+          </ul>
+        </li></strike>
+        <li>Animations
+          <ul>
+            <li>Have collapsed form of todos, with arrow to expand with animation.</li>
+            <li>Date, time, and tags shown when collapsed</li>
+            <li>Arrow only presented if required to show notes</li>
           </ul>
         </li>
       </ul>
