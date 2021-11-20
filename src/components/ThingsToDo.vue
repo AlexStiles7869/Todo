@@ -7,7 +7,13 @@
         <strike><li>Add click listeners to all the current todos to toggle their completion state.</li></strike>
         <strike><li>Add functionality for form contents to be read, then cleared, and added to current todos and local storage</li></strike>
         <strike><li>Get current todos from local storage</li></strike>
-        <li>Have different pages for completed and in progress todos, with ability to move todos once completed back to in progress</li>
+        <li>Filtering
+          <ul>
+            <li>Filter by completion state</li>
+            <li>Filter by tags</li>
+          </ul>
+        </li>
+        <strike><li>Ability to move todos once completed back to in progress</li></strike>
         <strike><li>Allow todos to be deleted</li></strike>
         <strike><li>Add the following fields to todos:
           <ul>

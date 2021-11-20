@@ -66,7 +66,7 @@ export default Vue.extend({
         id: JSON.parse(window.localStorage.getItem("todo_uid")!),
         date: "October 30th",
         time: "16:00",
-        note: "This is a test note",
+        note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu egestas turpis, sed consectetur arcu. Phasellus semper metus neque, vitae ornare est bibendum vel. Pellentesque efficitur, metus ac gravida maximus, elit purus molestie nisi, quis venenatis sem sem eu ipsum. Maecenas aliquet ullamcorper nulla nec mollis. Maecenas fringilla, orci a consequat eleifend, mauris sem tempor ex, sed placerat enim eros eget eros. Quisque consequat velit vitae lectus consectetur, eu hendrerit velit mollis. Cras sit amet convallis enim.",
         tags: [{name: "Home 🏠"}],
         completed: false
       }
