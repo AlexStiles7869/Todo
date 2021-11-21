@@ -23,8 +23,8 @@
                 <div class="todo-tags-container">
                     <h4>Tags</h4>
                     <div class="todo-tags">
-                        <Tag v-bind:tag="todo.tags[0]" />
-                        <!-- <Tag v-for="tag in todo.tags" v-bind:key="" /> -->
+                        <!-- <Tag v-bind:tag="todo.tags[0]" /> -->
+                        <Tag class="todo-tag" v-for="tag in todo.tags" v-bind:tag="tag" v-bind:key="tag.id" />
                     </div>
                 </div>
             </div>
@@ -80,7 +80,6 @@ export default Vue.extend({
 
             if (todo_button != null) {
                 const todo_id: number = Number.parseInt(todo_button.id.replace(/\D/g, ""));
-
                 this.toggle_todo_callback(todo_id);
             }
         }, remove_todo(evt: Event) {
@@ -88,7 +87,6 @@ export default Vue.extend({
 
             if (todo_button != null) {
                 const todo_id: number = Number.parseInt(todo_button.id.replace(/\D/g, ""));
-
                 this.remove_todo_callback(todo_id);
             }
         }
@@ -97,10 +95,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.todo:first-child {
+/* .todo:first-child {
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
-}
+} */
 
 .todo {
     padding: 1rem;
@@ -121,6 +119,17 @@ export default Vue.extend({
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.todo-tags {
+    display: flex;
+    max-width: 10rem;
+    flex-wrap: wrap;
+    margin-left: -0.25rem;
+}
+
+.todo-tag {
+    margin: 0.25rem;
 }
 
 .todo-glance-bottom {

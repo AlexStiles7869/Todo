@@ -1,5 +1,6 @@
 export type TagType = {
     name: string,
+    id: number,
 }
 
 export type TodoType = {

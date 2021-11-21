@@ -7,6 +7,7 @@
         <strike><li>Add click listeners to all the current todos to toggle their completion state.</li></strike>
         <strike><li>Add functionality for form contents to be read, then cleared, and added to current todos and local storage</li></strike>
         <strike><li>Get current todos from local storage</li></strike>
+        <li>Make todo names updatable</li>
         <li>Filtering
           <ul>
             <li>Filter by completion state</li>
