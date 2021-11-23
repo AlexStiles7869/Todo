@@ -30,9 +30,9 @@ export default Vue.extend({
     data() {
         return {
             modal_open: false,
-            remaining_tags: this.tags,
+            remaining_tags: JSON.parse(JSON.stringify(this.tags)),
             selected_tags: new Array,
-            current_results: this.tags,
+            current_results: JSON.parse(JSON.stringify(this.tags)),
             tag_selector_search: "",
         };
     }, components: {
@@ -46,23 +46,23 @@ export default Vue.extend({
             return `tag-selector-${tag.id}`;
         }, tag_search(): void {
             const search_term: string = this.tag_selector_search.toLowerCase();
-            this.current_results = this.remaining_tags.filter((tag) => tag.name.toLowerCase().includes(search_term)).sort((a, b) => a.id - b.id);
+            this.current_results = this.remaining_tags.filter((remaining_tag : TagType) => remaining_tag.name.toLowerCase().includes(search_term)).sort((a : TagType, b : TagType) => a.id - b.id);
         }, add_tag(evt: Event) {
             const tag_el: HTMLElement = evt.currentTarget as HTMLElement;
             const tag_id: number = Number.parseInt(tag_el.id.replace(/\D/g, ""))
             const tag: TagType = this.tags.find((tag) => tag.id == tag_id)!;
 
             this.selected_tags.push(tag);
-            this.remaining_tags.splice(this.remaining_tags.findIndex((tag) => tag.id == tag_id), 1);
+            this.remaining_tags.splice(this.remaining_tags.findIndex((remaining_tag : TagType) => remaining_tag.id == tag_id), 1);
 
             this.tag_search();
         }, remove_tag(evt: Event) {
             const tag_el: HTMLElement = evt.currentTarget as HTMLElement;
             const tag_id: number = Number.parseInt(tag_el.id.replace(/\D/g, ""))
-            const tag: TagType = this.tags.find((tag) => tag.id == tag_id)!;
+            const tag: TagType = this.tags.find((normal_tag) => normal_tag.id == tag_id)!;
 
             this.remaining_tags.push(tag);
-            this.selected_tags.splice(this.selected_tags.findIndex((tag) => tag.id == tag_id), 1);
+            this.selected_tags.splice(this.selected_tags.findIndex((selected_tag) => selected_tag.id == tag_id), 1);
 
             this.tag_search();
         }

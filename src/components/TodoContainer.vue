@@ -9,8 +9,8 @@
         </div>
         <div class="todo-tag-filtering">
           <h4>Tag Filters</h4>
-          <div v-if="tags.length" class="tag-filters">
-            <Tag class="tag-filter" v-for="tag in tags" v-bind:tag="tag" v-bind:key="tag.id" />
+          <div v-if="todo_tags.length" class="tag-filters">
+            <Tag class="tag-filter" v-for="tag in todo_tags" v-bind:tag="tag" v-bind:key="tag.id" />
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
           </div>
         </template>
       </div>
-      <NewTodo v-bind:add_todo_callback="add_todo_callback" v-bind:tags="tags" />
+      <NewTodo v-bind:add_todo_callback="add_todo_callback" v-bind:tags="safe_tags" />
       <!-- <div class="todo-status">
         <div class="todo-status-container">
           <span>In Progress: {{ in_progress_todos_length(todos) }}</span>
@@ -56,12 +56,12 @@ export default Vue.extend({
   name: "TodoContainer",
   data() {
     return {
-      tags: [] as TagType[],
+      todo_tags: [] as TagType[],
     }
   }, created() {
-    this.tags = this.get_all_tags();
+    this.todo_tags = this.get_todo_tags();
   }, beforeUpdate() {
-    this.tags = this.get_all_tags();
+    this.todo_tags = this.get_todo_tags();
   },
   components: {
     Todo,
@@ -70,27 +70,26 @@ export default Vue.extend({
   },
   props: {
     todos: Array as () => TodoType[],
+    safe_tags: Array as () => TagType[],
     toggle_todo_callback: Function,
     add_todo_callback: Function,
     remove_todo_callback: Function,
   },
   methods: {
-    get_all_tags() : TagType[] {
+    get_todo_tags() : TagType[] {
       let added_ids: number[] = [];
-      let tags: TagType[] = [];
+      let todo_tags: TagType[] = [];
 
       this.todos.forEach((todo) => {
         todo.tags.forEach((tag) => {
           if (!added_ids.includes(tag.id)) {
-            tags.push(tag);
+            todo_tags.push(tag);
             added_ids.push(tag.id);
           }
-        })
-      })
+        });
+      });
 
-      // console.log(tags);
-      return tags;
-      // return tags;
+      return todo_tags;
     }, in_progress_todos_length(todos: TodoType[]): number {
       return todos.filter((todo) => !todo.completed).length;
     }, completed_todos_length(todos: TodoType[]): number {

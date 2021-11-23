@@ -6,7 +6,8 @@
       <p>The app is shown below.</p>
     </div>
     <TodoContainer 
-      v-bind:todos="todos" 
+      v-bind:todos="todos"
+      v-bind:safe_tags="tags"
       v-bind:toggle_todo_callback="toggle_todo" 
       v-bind:add_todo_callback="add_todo"
       v-bind:remove_todo_callback="remove_todo" 
