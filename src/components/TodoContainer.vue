@@ -16,13 +16,15 @@
       </div>
       <div class="todos">
         <template v-if="todos.length">
-          <Todo 
-            v-for="todo in todos" 
-            v-bind:todo="todo" 
-            v-bind:key="todo.id" 
-            v-bind:toggle_todo_callback="toggle_todo_callback"
-            v-bind:remove_todo_callback="remove_todo_callback"
-          />      
+          <transition-group name="todo-animations">
+            <Todo
+              v-for="todo in todos" 
+              v-bind:todo="todo" 
+              v-bind:key="todo.id" 
+              v-bind:toggle_todo_callback="toggle_todo_callback"
+              v-bind:remove_todo_callback="remove_todo_callback"
+            />      
+          </transition-group>
         </template>
         <template v-else>
           <div class="no-todos">
@@ -30,20 +32,15 @@
           </div>
         </template>
       </div>
-      <div class="new-todo-form-container">
-        <form v-on:submit.prevent="add_todo">
-          <input class="form-input" type="text" name="todo" id="todo-input" v-model="new_todo_name">
-          <input class="form-submit" type="submit" value="Add">
-        </form>
-      </div>
-      <div class="todo-status">
+      <NewTodo v-bind:add_todo_callback="add_todo_callback" v-bind:tags="tags" />
+      <!-- <div class="todo-status">
         <div class="todo-status-container">
           <span>In Progress: {{ in_progress_todos_length(todos) }}</span>
         </div>
         <div class="todo-status-container">
           <span>Completed: {{ completed_todos_length(todos) }}</span>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -51,6 +48,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Todo from "../components/Todo.vue";
+import NewTodo from "../components/NewTodo.vue"
 import Tag from "../components/Tag.vue";
 import { TodoType, TagType } from "../types";
 
@@ -58,8 +56,7 @@ export default Vue.extend({
   name: "TodoContainer",
   data() {
     return {
-      tags: new Array,
-      new_todo_name: "",
+      tags: [] as TagType[],
     }
   }, created() {
     this.tags = this.get_all_tags();
@@ -68,7 +65,8 @@ export default Vue.extend({
   },
   components: {
     Todo,
-    Tag
+    Tag,
+    NewTodo,
   },
   props: {
     todos: Array as () => TodoType[],
@@ -78,41 +76,32 @@ export default Vue.extend({
   },
   methods: {
     get_all_tags() : TagType[] {
-      // let tags: TagType[] = this.todos.map((todo) => {
-      //   return todo.tags.filter((tag, pos, self) => {
-      //     return self.indexOf(tag) == pos;
-      //   });
-      // }).flat();
+      let added_ids: number[] = [];
+      let tags: TagType[] = [];
 
-      // tags = tags.filter((tag, index, self) => {
-        
-      // });
+      this.todos.forEach((todo) => {
+        todo.tags.forEach((tag) => {
+          if (!added_ids.includes(tag.id)) {
+            tags.push(tag);
+            added_ids.push(tag.id);
+          }
+        })
+      })
 
       // console.log(tags);
-
       return tags;
+      // return tags;
     }, in_progress_todos_length(todos: TodoType[]): number {
       return todos.filter((todo) => !todo.completed).length;
     }, completed_todos_length(todos: TodoType[]): number {
       return todos.filter((todo) => todo.completed).length;
-    }, add_todo() {
-      // Get the contents of form
-      const todo_name: string = this.new_todo_name;
-
-      if (todo_name && todo_name.trim()) {
-        // Create new todo
-        this.add_todo_callback(todo_name);
-
-        // Clear form
-        this.new_todo_name = "";
-      }
     }
   }
 });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 /* General */
 .growth-boi {
   flex-grow: 1
@@ -124,6 +113,14 @@ export default Vue.extend({
   border: 1px solid #eee;
   border-radius: 1rem;
   user-select: none;
+}
+
+@media screen and (max-width: 720px) {
+  .todo-container {
+    margin: 2rem 0;
+    width: 100%;
+    border-radius: 0;
+  }
 }
 
 /* Filtering */
@@ -138,7 +135,7 @@ export default Vue.extend({
   margin-left: 2rem;
 }
 
-.todo-filtering h4 {
+.todo-container h4 {
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.75rem;
@@ -175,46 +172,6 @@ export default Vue.extend({
 
 .no-todos span {
   font-size: 1.5rem;
-}
-
-/* Todo Add Form */
-
-.new-todo-form-container {
-  padding: 1rem;
-  border-top: 1px solid #eee;
-  width: 100%;
-}
-
-.new-todo-form-container form {
-  display: flex;
-  width: 100%;
-}
-
-.new-todo-form-container .form-input {
-  flex-grow: 1;
-  font-size: 0.9rem;
-  padding: 0.7rem;
-  background-color: #eee;
-  border: none;
-  border-radius: 0.2rem;
-  border: 1px solid transparent;
-}
-
-.new-todo-form-container .form-input:focus {
-  border: 1px solid #ccc;
-  outline: none;
-}
-
-.new-todo-form-container .form-submit {
-  margin-left: 1rem;
-  background-color: #2196f3;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.7rem 1rem;
-  font-weight: 500;
-  border-radius: 0.2rem;
-  -webkit-appearance: none;
 }
 
 /* Todos Status */

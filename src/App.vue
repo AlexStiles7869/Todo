@@ -22,7 +22,7 @@ import TodoContainer from "./components/TodoContainer.vue";
 import ThingsToDo from "./components/ThingsToDo.vue"
 import Footer from "./components/Footer.vue"
 
-import { TodoType } from "./types"
+import { TodoType, TagType } from "./types"
 
 export default Vue.extend({
   name: "App",
@@ -34,6 +34,13 @@ export default Vue.extend({
   data() {
     return {
       todos: new Array as TodoType[],
+      tags: [
+        {name: "Home 🏠", id: 0}, 
+        {name: "Work 🧳", id: 1}, 
+        {name: "Gym 🏋️‍♂️", id: 2},
+        {name: "Gardening 🌳", id: 3},
+        {name: "Programming 💻", id: 4}
+      ] as TagType[],
       storage: null,
     };
   }, created: function() {
@@ -60,14 +67,22 @@ export default Vue.extend({
       Vue.set(this.todos, this.todos.findIndex((todo) => todo.id == todo_id), modified_todo);
 
       window.localStorage.setItem("todos", JSON.stringify(this.todos));
-    }, add_todo(name: string) {
+    }, add_todo(name: string, date: string, time: string, notes: string) {
+      const date_obj: Date = new Date(date);
+      const formatted_date: string = date_obj.toLocaleDateString("en-NZ", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+
       const todo: TodoType = {
         name: name,
         id: JSON.parse(window.localStorage.getItem("todo_uid")!),
-        date: "October 30th",
-        time: "16:00",
-        note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu egestas turpis, sed consectetur arcu. Phasellus semper metus neque, vitae ornare est bibendum vel. Pellentesque efficitur, metus ac gravida maximus, elit purus molestie nisi, quis venenatis sem sem eu ipsum. Maecenas aliquet ullamcorper nulla nec mollis. Maecenas fringilla, orci a consequat eleifend, mauris sem tempor ex, sed placerat enim eros eget eros. Quisque consequat velit vitae lectus consectetur, eu hendrerit velit mollis. Cras sit amet convallis enim.",
-        tags: [{name: "Home 🏠", id: 0}, {name: "Work 🧳", id: 1}, {name: "Gym 🏋️‍♂️", id: 2}],
+        date: formatted_date,
+        time: time,
+        note: notes,
+        tags: this.tags,
         completed: false
       }
 
@@ -107,6 +122,12 @@ export default Vue.extend({
 
 .intro {
   margin: 2rem 2rem 0 2rem;
+}
+
+@media screen and (max-width: 720px) {
+  .intro {
+    margin: 2rem 1rem 0 1rem;
+  }
 }
 
 .intro > * {

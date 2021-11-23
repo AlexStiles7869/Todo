@@ -8,6 +8,16 @@
         <strike><li>Add functionality for form contents to be read, then cleared, and added to current todos and local storage</li></strike>
         <strike><li>Get current todos from local storage</li></strike>
         <li>Make todo names updatable</li>
+        <li>Make date, time, and notes optional</li>
+        <li>Consolidate date and time into singular datetime input</li>
+        <li>Create tag selector and div to display currently added tags</li>
+        <li>Mobile Fixes
+          <ul>
+            <li>Date and time not displaying properly</li>
+            <li>Remove page margins</li>
+
+          </ul>
+        </li>
         <li>Filtering
           <ul>
             <li>Filter by completion state</li>
@@ -29,6 +39,7 @@
             <li>Have collapsed form of todos, with arrow to expand with animation.</li>
             <li>Date, time, and tags shown when collapsed</li>
             <li>Arrow only presented if required to show notes</li>
+            <li>Have animation when todo completed</li>
           </ul>
         </li>
       </ul>
@@ -48,6 +59,12 @@ export default Vue.extend({
     list-style-position: inside;
 }
 
+@media screen and (max-width: 720px) {
+  .things-to-do-container {
+    margin: 0 1rem 2rem 1rem;
+  }
+}
+
 .things-to-do-container h2, .things-to-do-container h3 {
     font-weight: 600;
 }
@@ -62,5 +79,9 @@ export default Vue.extend({
 
 .things-to-do-container li > ul {
     margin-left: 2rem;
+}
+
+strike {
+  color: rgba(0,0,0,0.5);
 }
 </style>

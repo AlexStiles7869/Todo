@@ -41,10 +41,10 @@ footer {
     font-weight: 600;
 }
 
-.footer-content-container > *:not(:first-child) {
+.footer-container > *:not(:first-child) {
     margin-top: 0.5rem;
 }
-.footer-content-container p {
+.footer-container p {
     font-size: 0.9rem;
 }
 </style>
