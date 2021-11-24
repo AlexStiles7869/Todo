@@ -6,14 +6,14 @@
                 <input class="todo-name-input" placeholder="Todo Name" type="text" name="todo" id="todo-input" required v-model="new_todo_name">
             </div>
             <div class="form-row">
-                <input class="todo-date" type="date" v-bind:min="min_date" name="date" required v-model="new_todo_date">
-                <input class="todo-time" type="time" v-bind:min="min_time" name="time" required v-model="new_todo_time">
+                <input class="todo-date" type="date" name="date" required v-model="new_todo_date">
+                <input class="todo-time" type="time" name="time" required v-model="new_todo_time">
             </div>
             <div class="form-row">
                 <textarea name="notes" placeholder="Notes" v-model="new_todo_notes"></textarea>
             </div>
             <div class="form-row">
-                <TagSelector v-bind:tags="tags" />
+                <TagSelector v-bind:tags="tags" v-on:new-tag-selected="new_tag_selected" />
             </div>
             <div class="form-row">
                 <input class="form-submit" type="submit" value="Add">
@@ -34,6 +34,7 @@ export default Vue.extend({
             new_todo_date: "",
             new_todo_time: "",
             new_todo_notes: "",
+            new_todo_tags: new Array(),
         }
     },
     props: {
@@ -50,27 +51,17 @@ export default Vue.extend({
 
             if (todo_name && todo_name.trim() && todo_date && todo_time) {
                 // Create new todo
-                this.add_todo_callback(todo_name, todo_date, todo_time, todo_notes);
+                this.add_todo_callback(todo_name, todo_date, todo_time, todo_notes, this.new_todo_tags);
 
                 // Clear form
                 this.new_todo_name = "";
                 this.new_todo_date = "";
                 this.new_todo_time = "";
                 this.new_todo_notes = "";
+                this.new_todo_tags = new Array();
             }
-        }, min_date(): string {
-            // Get the current time and update the min field
-            const current_date: Date = new Date();
-            
-            const min_date: string = current_date.toLocaleDateString("en-NZ");
-
-            return min_date;
-        }, min_time(): string {
-            const current_date: Date = new Date();
-
-            const min_time: string = current_date.toLocaleTimeString("en-NZ");
-
-            return min_time;
+        }, new_tag_selected(tag : TagType) {
+            this.new_todo_tags.push(tag);
         }
     }
 })

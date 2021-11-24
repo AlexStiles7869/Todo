@@ -1,19 +1,7 @@
 <template>
   <div class="growth-boi">
     <div class="todo-container">
-      <div class="todo-filtering">
-        <div class="todo-completion-filtering">
-          <h4>Completion Filters</h4>
-          <!-- <div class="completion-filters">
-          </div> -->
-        </div>
-        <div class="todo-tag-filtering">
-          <h4>Tag Filters</h4>
-          <div v-if="todo_tags.length" class="tag-filters">
-            <Tag class="tag-filter" v-for="tag in todo_tags" v-bind:tag="tag" v-bind:key="tag.id" />
-          </div>
-        </div>
-      </div>
+      <TodoFiltering v-bind:filtering_tags="todo_tags"/>
       <div class="todos">
         <template v-if="todos.length">
           <transition-group name="todo-animations">
@@ -47,9 +35,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import TodoFiltering from "./TodoFiltering.vue"
 import Todo from "../components/Todo.vue";
 import NewTodo from "../components/NewTodo.vue"
-import Tag from "../components/Tag.vue";
 import { TodoType, TagType } from "../types";
 
 export default Vue.extend({
@@ -65,8 +53,8 @@ export default Vue.extend({
   },
   components: {
     Todo,
-    Tag,
     NewTodo,
+    TodoFiltering
   },
   props: {
     todos: Array as () => TodoType[],
@@ -122,43 +110,11 @@ export default Vue.extend({
   }
 }
 
-/* Filtering */
-
-.todo-filtering {
-  padding: 1rem;;
-  border-bottom: 1px solid #eee;
-  display: flex;
-}
-
-.todo-filtering > *:not(:first-child) {
-  margin-left: 2rem;
-}
-
 .todo-container h4 {
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.75rem;
 }
-
-
-.tag-filters, .completion-filters {
-    display: flex;
-    max-width: 20rem;
-    flex-wrap: wrap;
-    margin-left: -0.25rem;
-    margin-top: 0.5rem;
-}
-
-.tag-filter {
-  margin: 0.25rem;
-  cursor: pointer;
-  transition: 200ms;
-}
-
-.tag-filter:hover {
-  background-color: #eee;
-}
-
 
 /* Current Todos */
 

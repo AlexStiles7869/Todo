@@ -56,6 +56,8 @@ export default Vue.extend({
             this.remaining_tags.splice(this.remaining_tags.findIndex((remaining_tag : TagType) => remaining_tag.id == tag_id), 1);
 
             this.tag_search();
+
+            this.$emit("new-tag-selected", tag);
         }, remove_tag(evt: Event) {
             const tag_el: HTMLElement = evt.currentTarget as HTMLElement;
             const tag_id: number = Number.parseInt(tag_el.id.replace(/\D/g, ""))

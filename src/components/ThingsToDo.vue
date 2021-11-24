@@ -2,6 +2,11 @@
     <div class="things-to-do-container">
       <h2>Things to Do</h2>
       <p>Things that I need to do before this demo is completed.</p>
+      <h3>Cleaning</h3>
+      <ul>
+        <li>Replace todo and tag DOM ids with dataset tags</li>
+        <li>Pull down functionality from App.vue and place in TodoContainer.vue</li>
+      </ul>
       <h3>Todo Functionality:</h3>
       <ul>
         <strike><li>Add click listeners to all the current todos to toggle their completion state.</li></strike>

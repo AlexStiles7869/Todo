@@ -143,9 +143,6 @@ export default Vue.extend({
 }
 
 .todo h4 {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.75rem;
     margin-bottom: 0.5rem;
 }
 

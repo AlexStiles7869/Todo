@@ -68,7 +68,7 @@ export default Vue.extend({
       Vue.set(this.todos, this.todos.findIndex((todo) => todo.id == todo_id), modified_todo);
 
       window.localStorage.setItem("todos", JSON.stringify(this.todos));
-    }, add_todo(name: string, date: string, time: string, notes: string) {
+    }, add_todo(name: string, date: string, time: string, notes: string, tags: TagType[]) {
       const date_obj: Date = new Date(date);
       const formatted_date: string = date_obj.toLocaleDateString("en-NZ", {
         weekday: "long",
@@ -83,7 +83,7 @@ export default Vue.extend({
         date: formatted_date,
         time: time,
         note: notes,
-        tags: this.tags,
+        tags: tags,
         completed: false
       }
 
