@@ -1,5 +1,12 @@
 # todo
 
+## Run on modern node
+This project is archived and is no longer maintained. This project can't be run without modification on Node@17. To run on newer Node versions define the following value before running the following commands.
+
+```
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
 ## Project setup
 ```
 npm install
